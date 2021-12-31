@@ -61,7 +61,8 @@ contract Contact {
         require( profiles[_index].user == msg.sender, "Only callable by owner");
         _;
     }
-
+    
+    // register as a new user
     function registerUser(
         string memory _name,
         string memory _pfp,
@@ -79,7 +80,8 @@ contract Contact {
         );
         profilesLength++;
     }
-
+    
+    // send message to someone
     function sendMessage(uint256 _index, string memory _content) public {
         messages[messagesLength] = Message(msg.sender, _content, block.timestamp);
 
@@ -87,7 +89,8 @@ contract Contact {
 
         messagesLength++;
     }
-
+    
+    // retrieve profile data
     function getProfile(uint256 _index)
         public
         view
@@ -109,7 +112,8 @@ contract Contact {
             profiles[_index].contacts
         );
     }
-
+    
+    // get bulk messages
     function getMessages(uint256 _index)
         public
         view
@@ -117,7 +121,8 @@ contract Contact {
     {
         return (chats[_index]);
     }
-
+    
+    // get a particular message
     function getMessage(uint256 _index)
         public
         view
@@ -125,7 +130,8 @@ contract Contact {
     {
         return (messages[_index].sender, messages[_index].content);
     }
-
+    
+    // initiate chat with a user - this will deduct celo
     function startChat(uint256 _index, string memory message) public payable {
         require(
             IERC20Token(cUsdTokenAddress).transferFrom(
@@ -150,15 +156,18 @@ contract Contact {
     {
         return (chatsUnited[_user]);
     }
-
+    
+    // get total length of profiles
     function getProfilesLength() public view returns (uint256) {
         return (profilesLength);
     }
 
+    // update profile pics
     function updateProfilePrice(uint _index, uint _price) public payable onlyOwner(_index) {
         profiles[_index].price = _price;
     }
-
+    
+    // get total count of chats
     function getChatsLength() public view returns (uint256) {
         return (chatsLength);
     }
